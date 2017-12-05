@@ -144,7 +144,7 @@ class DataInputStream(InputStream):
         return struct.unpack(">b", data)[0]
 
     def readFully(self, length):
-        return [self.readByte() for _ in xrange(length)]
+        return [self.readByte() for _ in range(length)]
 
     def readUByte(self):
         data = self._stream.read(1)

@@ -18,8 +18,8 @@
 
 import os
 
-from IntWritable import LongWritable
-import SequenceFile
+from .IntWritable import LongWritable
+from . import SequenceFile
 
 INDEX_FILE_NAME = 'index'
 DATA_FILE_NAME = 'data'

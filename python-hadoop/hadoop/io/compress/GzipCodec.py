@@ -19,18 +19,18 @@
 import gzip
 
 from hadoop.io.InputStream import DataInputBuffer
-import StringIO
+import io
 
 class GzipCodec:
     def compress(self, data):
-        ioObj = StringIO.StringIO()
+        ioObj = io.StringIO()
         f = gzip.GzipFile(fileobj = ioObj, mode='wb')
         f.write(data)
         f.close()
         return ioObj.getValue()
 
     def decompress(self, data):
-        ioObj = StringIO.StringIO(data)
+        ioObj = io.StringIO(data)
         f = gzip.GzipFile(fileobj = ioObj, mode='rb')
         d = f.read()
         f.close()

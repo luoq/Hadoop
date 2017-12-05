@@ -23,15 +23,15 @@ import os
 
 from hadoop.util.ReflectionUtils import hadoopClassFromName, hadoopClassName
 
-from compress import CodecPool
+from .compress import CodecPool
 
-from WritableUtils import readVInt, writeVInt
-from Writable import Writable
-from OutputStream import FileOutputStream, DataOutputStream, DataOutputBuffer
-from InputStream import FileInputStream, DataInputStream, DataInputBuffer
-from VersionMismatchException import VersionMismatchException, VersionPrefixException
+from .WritableUtils import readVInt, writeVInt
+from .Writable import Writable
+from .OutputStream import FileOutputStream, DataOutputStream, DataOutputBuffer
+from .InputStream import FileInputStream, DataInputStream, DataInputBuffer
+from .VersionMismatchException import VersionMismatchException, VersionPrefixException
 
-from Text import Text
+from .Text import Text
 
 BLOCK_COMPRESS_VERSION  = '\x04'
 CUSTOM_COMPRESS_VERSION = '\x05'
@@ -64,26 +64,26 @@ class Metadata(Writable):
         self._meta[name] = value
 
     def keys(self):
-        return self._meta.keys()
+        return list(self._meta.keys())
 
     def iterkeys(self):
-        return self._meta.iterkeys()
+        return iter(list(self._meta.keys()))
 
     def values(self):
-        return self._meta.values()
+        return list(self._meta.values())
 
     def itervalues(self):
-        return self._meta.itervalues()
+        return iter(list(self._meta.values()))
 
     def iteritems(self):
-        return self._meta.iteritems()
+        return iter(list(self._meta.items()))
 
     def __iter__(self):
-        return self._meta.iteritems()
+        return iter(list(self._meta.items()))
 
     def write(self, data_output):
         data_output.writeInt(len(self._meta))
-        for key, value in self._meta.iteritems():
+        for key, value in list(self._meta.items()):
             Text.writeString(data_output, key)
             Text.writeString(data_output, value)
 
@@ -92,7 +92,7 @@ class Metadata(Writable):
         if count < 0:
             raise IOError("Invalid size: %d for file metadata object" % count)
 
-        for i in xrange(count):
+        for i in range(count):
             key = Text.readString(data_input)
             value = Text.readString(data_input)
             self._meta[key] = value
