@@ -48,7 +48,7 @@ class InputStream(object):
         raise NotImplementedError
 
 class ByteArrayInputStream(InputStream):
-    def __init__(self, data='', offset=0, length=0):
+    def __init__(self, data=b'', offset=0, length=0):
         self.reset(data, offset, length)
 
     def size(self):
@@ -105,7 +105,7 @@ class FileInputStream(InputStream):
             data_length = len(data)
             byte_buffer.append(data)
             length -= data_length
-        return ''.join(byte_buffer)
+        return b''.join(byte_buffer)
 
     def skip(self, n):
         skip_length = 0
@@ -144,7 +144,7 @@ class DataInputStream(InputStream):
         return struct.unpack(">b", data)[0]
 
     def readFully(self, length):
-        return [self.readByte() for _ in range(length)]
+        return self._stream.read(length)
 
     def readUByte(self):
         data = self._stream.read(1)

@@ -33,11 +33,11 @@ from .VersionMismatchException import VersionMismatchException, VersionPrefixExc
 
 from .Text import Text
 
-BLOCK_COMPRESS_VERSION  = '\x04'
-CUSTOM_COMPRESS_VERSION = '\x05'
-VERSION_WITH_METADATA   = '\x06'
-VERSION_PREFIX = 'SEQ'
-VERSION = VERSION_PREFIX + VERSION_WITH_METADATA
+BLOCK_COMPRESS_VERSION  = 4
+CUSTOM_COMPRESS_VERSION = 5
+VERSION_WITH_METADATA   = 6
+VERSION_PREFIX = b'SEQ'
+VERSION = VERSION_PREFIX + bytes([VERSION_WITH_METADATA])
 
 SYNC_ESCAPE = -1
 SYNC_HASH_SIZE = 16
@@ -464,7 +464,7 @@ class Reader(object):
             self._key_class_name = Text.readString(self._stream)
             self._value_class_name = Text.readString(self._stream)
 
-        if ord(self._version) > 2:
+        if self._version > 2:
             self._decompress = self._stream.readBoolean()
         else:
             self._decompress = False
